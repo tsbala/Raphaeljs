@@ -42,8 +42,6 @@
                         color = arcColor || '#aac101' || "hsb(".concat(Math.round(R) / 2, ",", value / total, ", .75)"),
                         path;
 
-                        console.log(value, total);
-                        console.log([color, arcColor]);
                     if (total == value) {
                         path = [["M", 300, 300 - R], ["A", R, R, 0, 1, 1, 299.99, 300 - R]];
                     } else {
