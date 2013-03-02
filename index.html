@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style media="screen">
+			body {
+			    background: #333;
+			    color: #fff;
+			    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+			}
+
+            #rcanvas {
+    			left: 50%;
+    			position: absolute;
+    			top: 50%;
+				height: 600px;
+                margin: -300px 0 0 -300px;
+                width: 600px;    			            
+    		}
+
+    		#overlay {
+    			left: 45%;
+    			position: absolute;
+    			top: 48%;
+    		}
+        </style>
+	</head>
+	<body>
+		<div id="rcanvas"/>
+		<div id="overlay">
+			<span>0 days left</span>
+		</div>
+		<script src="raphael.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				var r = Raphael(rcanvas, 640, 480),
+					param = {stroke: "#fff", "stroke-width": 30};
+  				r.customAttributes.arc = function (value, total, R, arcColor) {
+                    var alpha = 360 / total * value,
+                        a = (90 - alpha) * Math.PI / 180,
+                        x = 300 + R * Math.cos(a),
+                        y = 300 - R * Math.sin(a),
+                        color = arcColor || '#aac101' || "hsb(".concat(Math.round(R) / 2, ",", value / total, ", .75)"),
+                        path;
+
+                        console.log(value, total);
+                        console.log([color, arcColor]);
+                    if (total == value) {
+                        path = [["M", 300, 300 - R], ["A", R, R, 0, 1, 1, 299.99, 300 - R]];
+                    } else {
+                        path = [["M", 300, 300 - R], ["A", R, R, 0, +(alpha > 180), 1, x, y]];
+                    }
+                    return { path: path, stroke: color };
+                };
+
+                r.path().attr(param).attr({arc: [100, 100, 80, '#999']});
+               	var path = r.path().attr(param).attr({arc: [0, 100, 80, '#aac101']});
+               	animatePath(path, 0, 71, 100, '#aac101');
+                
+
+                function animatePath(path, initialValue, finalValue, total, color) {
+                	path.animate({arc: [initialValue, total, 80, color]}, 10, "elastic");
+                	initialValue += 1;
+                	if (initialValue === finalValue) {
+	                	path.animate({arc: [finalValue, total, 80, color]}, 750, ">");
+                		return;
+                	}
+                	setTimeout(arguments.callee(path, initialValue, finalValue, total, color), 2000);
+                }; 
+            };
+		</script>
+	</body>
+</html>
