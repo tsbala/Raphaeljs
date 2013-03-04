@@ -51,18 +51,15 @@
                 };
 
                 r.path().attr(param).attr({arc: [100, 100, 80, '#999']});
-               	var path = r.path().attr(param).attr({arc: [0, 100, 80, '#aac101']});
+               	var path = r.path().attr(param).attr({arc: [0, 71, 80, '#aac101']});
                	animatePath(path, 0, 71, 100, '#aac101');
                 
 
                 function animatePath(path, initialValue, finalValue, total, color) {
-                	path.animate({arc: [initialValue, total, 80, color]}, 10, "elastic");
-                	initialValue += 1;
-                	if (initialValue === finalValue) {
-	                	path.animate({arc: [finalValue, total, 80, color]}, 750, ">");
-                		return;
-                	}
-                	setTimeout(arguments.callee(path, initialValue, finalValue, total, color), 2000);
+					while (initialValue <= finalValue) {
+						path.animate({arc: [initialValue, total, 80, color]}, 1500, "linear");
+						initialValue += 1;
+					}
                 }; 
             };
 		</script>
